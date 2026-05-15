@@ -73,7 +73,7 @@ class LoginHelper{
         ? config?.iosAppMinimumVersion ?? 0
         : 0;
 
-    return minimumVersion > 0 && minimumVersion > AppConstants.appVersion;
+    return minimumVersion > 0 && minimumVersion > (double.tryParse(AppConstants.appVersion) ?? 0);
   }
 
   void route(Map<String,dynamic>? notificationData) async {
