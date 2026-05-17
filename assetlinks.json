@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "zerinexpress.com",
+      "sha256_cert_fingerprints": [
+        "7F:5F:25:60:92:B1:B5:2B:F5:70:87:EF:C0:70:DD:DA:EF:7E:DC:7F:29:B3:9C:80:2B:10:BD:04:6E:5A:28:18"
+      ]
+    }
+  }
+]

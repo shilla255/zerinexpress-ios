@@ -6,12 +6,13 @@ import 'package:zerin_express/util/images.dart';
 class AppConstants {
   static const String appName = 'Zerin Express';
   static const String baseUrl = 'https://zerinexpress.com';
+  static const String configUri = '/api/customer/configuration';
+  static const String appVersion = '1.0.2';
+  static const String fontFamily = 'SFProText';
+  static const bool configFromBackend = true;
   static const String mapApiKeyClient = 'AIzaSyAo76Ccy2qHIoOURyn9hIN0ahjJ6OgNc3U';
   static const String mapApiKeyServer = 'AIzaSyCnTJcgbtoZm_2BkI_2js5bJHBe_wRLYnM';
-  static const String appVersion = '1.0.0'; /// Zerin Express v1.0.0
-  static const String fontFamily = 'SFProText';
   static const double coverageRadiusInMeter = 50;
-  static const String configUri = '/api/customer/configuration';
   static const String registration = '/api/customer/auth/registration';
   static const String loginUri = '/api/customer/auth/login';
   static const String logOutUri = '/api/user/logout';

@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["7WSYLQ8Y87.zerinexpress.com"],
+        "components": [
+          {
+            "/": "/locate-user/*",
+            "comment": "Matches locate-user path"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["7WSYLQ8Y87.zerinexpress.com"]
+  }
+}

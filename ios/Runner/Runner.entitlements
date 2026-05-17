@@ -5,12 +5,12 @@
 	<key>aps-environment</key>
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
-        <array>
-            <string>applinks:YOUR_DOMAIN_HERE_WITHOUT_HTTP</string>
-        </array>
+	<array>
+		<string>applinks:zerinexpress.com</string>
+	</array>
         <key>keychain-access-groups</key>
         <array>
-            <string>YOUR_TEAM_ID.YOUR_BUNDLE_ID</string>
+            <string>7WSYLQ8Y87.zerinexpress.com</string>
         </array>
 </dict>
 </plist>
