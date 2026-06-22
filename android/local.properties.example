@@ -1,0 +1,7 @@
+# Copy to android/local.properties (merge with existing sdk.dir if present).
+# local.properties is gitignored — do not commit secrets.
+
+sdk.dir=/Users/YOUR_USER/Library/Android/sdk
+
+# Optional: Google Maps key for AndroidManifest (native map SDK)
+GOOGLE_MAPS_API_KEY=YOUR_GOOGLE_MAPS_API_KEY

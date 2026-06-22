@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:zerin_express/data/api_client.dart';
 import 'package:zerin_express/features/auth/domain/models/sign_up_body.dart';
@@ -121,14 +122,13 @@ class AuthRepository implements AuthRepositoryInterface{
   }
 
   Future<String?> _saveDeviceToken() async {
-    String? deviceToken = '@';
+    String? deviceToken;
     try {
       deviceToken = await FirebaseMessaging.instance.getToken();
-    }catch(e) {
-      log('--------Device Token---------- $deviceToken');
-    }
-    if (deviceToken != null) {
-      log('--------Device Token---------- $deviceToken');
+    } catch (e) {
+      if (kDebugMode) {
+        log('Failed to get device token: $e');
+      }
     }
     return deviceToken;
   }
@@ -191,6 +191,8 @@ class AuthRepository implements AuthRepositoryInterface{
   bool clearSharedData() {
     sharedPreferences.remove(AppConstants.token);
     sharedPreferences.remove(AppConstants.userAddress);
+    sharedPreferences.remove(AppConstants.userPassword);
+    sharedPreferences.remove(AppConstants.externalUserPassword);
     return true;
   }
 
@@ -198,7 +200,7 @@ class AuthRepository implements AuthRepositoryInterface{
   Future<void> saveUserNumberAndPassword(String code, String number, String password, bool externalUser) async {
     if(externalUser){
       try {
-        await sharedPreferences.setString(AppConstants.externalUserPassword, password);
+        await sharedPreferences.remove(AppConstants.externalUserPassword);
         await sharedPreferences.setString(AppConstants.externalUserPhone, number);
         await sharedPreferences.setString(AppConstants.externalUserCountryCode, code);
       } catch (e) {
@@ -206,7 +208,7 @@ class AuthRepository implements AuthRepositoryInterface{
       }
     }else{
       try {
-        await sharedPreferences.setString(AppConstants.userPassword, password);
+        await sharedPreferences.remove(AppConstants.userPassword);
         await sharedPreferences.setString(AppConstants.userNumber, number);
         await sharedPreferences.setString(AppConstants.loginCountryCode, code);
 
@@ -238,11 +240,7 @@ class AuthRepository implements AuthRepositoryInterface{
 
   @override
   String getUserPassword(bool externalUser) {
-    if(externalUser){
-      return sharedPreferences.getString(AppConstants.externalUserPassword) ?? "";
-    }else{
-      return sharedPreferences.getString(AppConstants.userPassword) ?? "";
-    }
+    return '';
   }
 
 

@@ -10,8 +10,6 @@ class AppConstants {
   static const String appVersion = '1.0.2';
   static const String fontFamily = 'SFProText';
   static const bool configFromBackend = true;
-  static const String mapApiKeyClient = 'AIzaSyAo76Ccy2qHIoOURyn9hIN0ahjJ6OgNc3U';
-  static const String mapApiKeyServer = 'AIzaSyCnTJcgbtoZm_2BkI_2js5bJHBe_wRLYnM';
   static const double coverageRadiusInMeter = 50;
   static const String registration = '/api/customer/auth/registration';
   static const String loginUri = '/api/customer/auth/login';

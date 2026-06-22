@@ -130,15 +130,15 @@ class ApiClient extends GetxService {
       }
 
       for(MultipartBody multipart in multipartBody) {
-        log("Here-----${multipart.file}/${multipart.key}");
+        if(kDebugMode) {
+          log('Uploading multipart: ${multipart.key}');
+        }
         if(multipart.file != null) {
-         log("Here----Inside-");
           Uint8List list = await multipart.file!.readAsBytes();
           request.files.add(http.MultipartFile(
             multipart.key, multipart.file!.readAsBytes().asStream(), list.length,
             filename: multipart.file?.path.split('/').last,
           ));
-          log("===ImageKey==>${multipart.key}/${multipart.file!.readAsBytes().asStream()}");
         }
 
       }
@@ -204,7 +204,9 @@ class ApiClient extends GetxService {
       localResponse = Response(statusCode: 0, statusText: noInternetMessage);
     }
 
-    log('====> API Response: [${localResponse.statusCode}] $uri\n${localResponse.body}');
+    if(kDebugMode) {
+      log('====> API Response: [${localResponse.statusCode}] $uri');
+    }
 
     return localResponse;
   }

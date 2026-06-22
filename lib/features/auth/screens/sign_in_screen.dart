@@ -40,10 +40,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if(Get.find<AuthController>().getUserNumber(false).isNotEmpty) {
       phoneController.text =  Get.find<AuthController>().getUserNumber(false);
-    }
-    passwordController.text = Get.find<AuthController>().getUserPassword(false);
-
-    if(passwordController.text.isNotEmpty) {
       Get.find<AuthController>().setRememberMe();
     }
 

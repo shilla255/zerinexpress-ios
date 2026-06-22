@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -33,21 +35,21 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSCameraUsageDescription</key>
-    <string>This app need camera access for taking photo for user profile picture.</string>
-    <key>NSPrivacyAccessedAPITypes</key>
-    <string>This app need location permission for tracking driver start to destination trip.</string>
+    <string>Zerin Express uses the camera so you can add a profile photo.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>This app needs access to location for pick location for creating a ride request, Then driver can pickup you.</string>
+    <string>Zerin Express needs your location to set pickup and drop-off points and match you with nearby drivers.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Zerin Express needs your location to track your ride in progress and share live trip updates.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-        <string>This app needs access to location for pick location for creating a ride request, Then driver can pickup you</string>
+    <string>Zerin Express needs your location to track your ride in progress and share live trip updates.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app need photo gallery access for taking photo for user profile picture.</string>
+    <string>Zerin Express needs photo library access so you can upload a profile picture.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Zerin Express needs permission to save images to your photo library.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Need microphone access for uploading photos</string>
+    <string>Zerin Express uses the microphone for voice search when finding locations.</string>
     <key>NSSpeechRecognitionUsageDescription</key>
-    <string>Permission required to record audio for speech recognition</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Permission required to record audio for speech recognition</string>
+    <string>Zerin Express uses speech recognition to convert your voice into location search text.</string>
     <key>UIBackgroundModes</key>
     <array>
         <string>fetch</string>
@@ -83,7 +85,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.76471554747-3p9dhm14lm8ka1qruonucnaduk5rpsf7</string>
+				<string>REPLACE_WITH_FIREBASE_IOS_REVERSED_CLIENT_ID</string>
 			</array>
 		</dict>
 	</array>

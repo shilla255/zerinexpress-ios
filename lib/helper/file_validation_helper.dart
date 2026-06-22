@@ -18,7 +18,7 @@ class FileValidationHelper {
   }) async {
     try {
       // Step 1: Pick the file
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: allowedExtensions,
       );

@@ -17,11 +17,16 @@ import 'package:zerin_express/util/app_constants.dart';
 class PusherHelper {
   static PusherChannelsClient?  pusherClient;
   static void initializePusher() async{
+    final config = Get.find<ConfigController>().config!;
+    final host = _resolveWebSocketHost(config.webSocketUrl);
+    final port = int.tryParse(config.webSocketPort ?? '') ?? 6001;
+    final scheme = config.websocketScheme == 'https' ? 'wss' : 'ws';
+
     PusherChannelsOptions testOptions = PusherChannelsOptions.fromHost(
-      host: Get.find<ConfigController>().config!.webSocketUrl ?? '',
-      scheme: Get.find<ConfigController>().config!.websocketScheme == 'https' ? 'wss' : 'ws',
-      key: Get.find<ConfigController>().config!.webSocketKey ?? '',
-      port: int.parse(Get.find<ConfigController>().config?.webSocketPort ?? '6001'),
+      host: host,
+      scheme: scheme,
+      key: config.webSocketKey ?? '',
+      port: port,
     );
 
     pusherClient = PusherChannelsClient.websocket(
@@ -34,7 +39,7 @@ class PusherHelper {
 
     await pusherClient?.connect();
 
-    String? pusherChannelId =  pusherClient?.channelsManager.channelsConnectionDelegate.socketId;
+    String? pusherChannelId = pusherClient?.socketId;
     if(pusherChannelId != null){
       Get.find<ConfigController>().setPusherStatus('Connected');
     }
@@ -54,7 +59,7 @@ class PusherHelper {
 
   void pusherDriverStatus(String tripId){
 
-    if (Get.find<ConfigController>().pusherConnectionStatus != null || Get.find<ConfigController>().pusherConnectionStatus == 'Connected'){
+    if (Get.find<ConfigController>().pusherConnectionStatus == 'Connected'){
       pusherDriverAccepted = pusherClient!.privateChannel("private-driver-trip-accepted.$tripId", authorizationDelegate:
       EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
         authorizationEndpoint: Uri.parse('https://${Get.find<ConfigController>().config!.webSocketUrl}/broadcasting/auth'),
@@ -66,7 +71,7 @@ class PusherHelper {
         },
       ));
 
-      if(pusherDriverAccepted.currentStatus ==  null){
+      if(pusherDriverAccepted.state == null){
         pusherDriverAccepted.subscribe();
         pusherDriverAccepted.bind("driver-trip-accepted.$tripId").listen((event) {
           Get.find<RideController>().getRideDetails(jsonDecode(event.data!)['id']).then((value){
@@ -100,7 +105,7 @@ class PusherHelper {
         },
       ));
 
-      if(driverTripStarted.currentStatus == null){
+      if(driverTripStarted.state == null){
         driverTripStarted.subscribe();
         driverTripStarted.bind("driver-trip-started.$tripId").listen((event) {
           Get.find<RideController>().startLocationRecord();
@@ -150,7 +155,7 @@ class PusherHelper {
         },
       ));
 
-      if(driverTripCancelled.currentStatus == null){
+      if(driverTripCancelled.state == null){
         driverTripCancelled.subscribe();
         driverTripCancelled.bind("driver-trip-cancelled.$tripId").listen((event) async{
           Get.find<RideController>().stopLocationRecord();
@@ -172,7 +177,7 @@ class PusherHelper {
         },
       ));
 
-      if(driverTripCompleted.currentStatus ==  null){
+      if(driverTripCompleted.state == null){
         driverTripCompleted.subscribe();
         driverTripCompleted.bind("driver-trip-completed.$tripId").listen((event) {
           if(jsonDecode(event.data!)['type']== AppConstants.parcel){
@@ -209,7 +214,7 @@ class PusherHelper {
           'Access-Control-Allow-Methods':"PUT, GET, POST, DELETE, OPTIONS"
         },
       ));
-      if(driverPaymentReceived.currentStatus == null){
+      if(driverPaymentReceived.state == null){
         driverPaymentReceived.subscribe();
         driverPaymentReceived.bind("driver-payment-received.$tripId").listen((event) {
           if (jsonDecode(event.data!)['type']== 'ride_request') {
@@ -237,6 +242,15 @@ class PusherHelper {
       }
     }
 
+  }
+
+  static String _resolveWebSocketHost(String? configuredHost) {
+    if (configuredHost != null &&
+        configuredHost.isNotEmpty &&
+        configuredHost.toLowerCase() != 'none') {
+      return configuredHost;
+    }
+    return Uri.parse(AppConstants.baseUrl).host;
   }
 
 }

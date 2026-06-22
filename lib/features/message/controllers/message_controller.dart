@@ -106,7 +106,7 @@ class MessageController extends GetxController implements GetxService{
       _otherFile=null;
       _file = null;
     }else{
-      _otherFile = (await FilePicker.platform.pickFiles(
+      _otherFile = (await FilePicker.pickFiles(
         type: FileType.custom,
         withReadStream: true,
         allowedExtensions: AppConstants.allowedImageExtensionsForFile,
@@ -247,7 +247,7 @@ class MessageController extends GetxController implements GetxService{
       id = tripId;
     }
 
-    if (Get.find<ConfigController>().pusherConnectionStatus != null || Get.find<ConfigController>().pusherConnectionStatus == 'Connected'){
+    if (Get.find<ConfigController>().pusherConnectionStatus == 'Connected'){
       channel = PusherHelper.pusherClient!.privateChannel("private-customer-ride-chat.$id", authorizationDelegate:
       EndpointAuthorizableChannelTokenAuthorizationDelegate.forPrivateChannel(
         authorizationEndpoint: Uri.parse('https://${Get.find<ConfigController>().config!.webSocketUrl}/broadcasting/auth'),
@@ -259,7 +259,7 @@ class MessageController extends GetxController implements GetxService{
         },
       ));
 
-      if(channel.currentStatus == null){
+      if(channel.state == null){
         channel.subscribe();
         channel.bind("customer-ride-chat.$id").listen((event) {
           if(id == jsonDecode(event.data!)['channel_conversation']['channel']['trip_id']){

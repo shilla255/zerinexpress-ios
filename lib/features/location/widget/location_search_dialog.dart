@@ -43,8 +43,6 @@ class LocationSearchDialog extends StatelessWidget {
                  style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: Dimensions.fontSizeLarge),
                );
              },
-
-             hideWithKeyboard: true,
              suggestionsCallback: (pattern) async {
               return await Get.find<LocationController>().searchLocation(context, pattern, fromMap: true);
             },

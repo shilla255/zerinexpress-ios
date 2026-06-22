@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:zerin_express/features/onboard/controllers/on_board_page_controller.dart';
-import 'package:zerin_express/features/onboard/widget/pager_content.dart';
 import 'package:zerin_express/helper/login_helper.dart';
 import 'package:zerin_express/localization/language_selection_screen.dart';
 import 'package:zerin_express/localization/localization_controller.dart';
@@ -11,8 +10,6 @@ import 'package:zerin_express/util/dimensions.dart';
 import 'package:zerin_express/util/images.dart';
 import 'package:zerin_express/util/styles.dart';
 import 'package:zerin_express/features/splash/controllers/config_controller.dart';
-import 'package:zerin_express/common_widgets/button_widget.dart';
-
 class OnBoardingScreen extends StatefulWidget {
   final Map<String,dynamic>? notificationData;
   const OnBoardingScreen({super.key, required this.notificationData});
@@ -26,7 +23,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> with SingleTickerPr
   late final ValueNotifier<int> _currentPage = ValueNotifier(0)..addListener(() => setState(() {}));
 
   late AnimationController _controller;
-  late Animation _animation;
 
   final List<Widget> pages = [];
 
@@ -35,10 +31,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> with SingleTickerPr
   void initState() {
 
     _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
     _controller.forward();
 
     super.initState();
@@ -57,12 +49,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> with SingleTickerPr
     int newPage = _pageController.page?.round() ?? 0;
     _currentPage.value = newPage;
   }
-
-  void _handleSemanticSwipe(int dir) {
-    _pageController.animateToPage((_pageController.page ?? 0).round() + dir,
-        duration: const Duration(milliseconds: 1), curve: Curves.easeOut);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -248,59 +234,6 @@ void _checkNavigationRoute(Map<String,dynamic>? notificationData){
     LoginHelper.checkLoginMedium();
   }else{
     Get.offAll(()=> LanguageSelectionScreen(notificationData: notificationData));
-  }
-}
-
-
-class _NavigationButtonWidget extends StatelessWidget {
-  final Map<String,dynamic>? notificationData;
-  final PageController pageController;
-  const _NavigationButtonWidget({required this.pageController, required this.notificationData});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      const SizedBox(width: Dimensions.paddingSizeExtraLarge),
-
-      TextButton(
-          onPressed: () {
-            Get.find<ConfigController>().disableIntro();
-            _checkNavigationRoute(notificationData);
-          },
-          child: Text('skip'.tr, style: textMedium.copyWith(fontSize: Dimensions.fontSizeDefault, color: Colors.white.withValues(alpha:0.7))),
-        ),
-
-      const Spacer(),
-
-      InkWell(
-        onTap: (){
-           if (AppConstants.onBoardPagerData.length - 1 == Get.find<OnBoardController>().pageIndex) {
-            Get.find<ConfigController>().disableIntro();
-            _checkNavigationRoute(notificationData);
-          } else {
-            pageController.nextPage(
-              duration: const Duration(milliseconds: 600),
-              curve: Curves.easeOut,
-            );
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(100)
-          ),
-          child: Row(
-            children: [
-              Text('next'.tr, style: textBold.copyWith(color: Theme.of(context).primaryColor)),
-              const SizedBox(width: 8),
-              Icon(Icons.arrow_forward_rounded, color: Theme.of(context).primaryColor, size: 18),
-            ],
-          ),
-        ),
-      ),
-      const SizedBox(width: Dimensions.paddingSizeExtraLarge),
-    ]);
   }
 }
 

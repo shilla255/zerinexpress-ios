@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +15,7 @@ import 'package:zerin_express/theme/dark_theme.dart';
 import 'package:zerin_express/theme/light_theme.dart';
 import 'package:zerin_express/theme/theme_controller.dart';
 import 'package:zerin_express/util/app_constants.dart';
+import 'package:zerin_express/util/env_config.dart';
 
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -23,28 +25,43 @@ Future<void> main() async {
   
   try {
     if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: const FirebaseOptions(
-          apiKey: "AIzaSyAg0pkKGzrJcSRv-uWI82JrzSJvyz1h_bY",
-          appId: "1:56442076502:android:4e9ab51b5949b147b96af7",
-          messagingSenderId: "56442076502",
-          projectId: "zerinexpress-1401c",
-          storageBucket: "zerinexpress-1401c.appspot.com",
-        ),
-      );
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        if (EnvConfig.firebaseAndroidApiKey.isNotEmpty) {
+          await Firebase.initializeApp(
+            options: FirebaseOptions(
+              apiKey: EnvConfig.firebaseAndroidApiKey,
+              appId: const String.fromEnvironment(
+                'FIREBASE_ANDROID_APP_ID',
+                defaultValue: '1:56442076502:android:4e9ab51b5949b147b96af7',
+              ),
+              messagingSenderId: '56442076502',
+              projectId: 'zerinexpress-1401c',
+              storageBucket: 'zerinexpress-1401c.firebasestorage.app',
+            ),
+          );
+        } else {
+          await Firebase.initializeApp();
+        }
+      } else {
+        await Firebase.initializeApp();
+      }
     }
   } catch (e) {
-    debugPrint('Firebase init error: $e');
+    if (kDebugMode) {
+      debugPrint('Firebase init error: $e');
+    }
   }
 
   Map<String, Map<String, String>> languages = await di.init();
 
   try {
-    final RemoteMessage? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
+    await FirebaseMessaging.instance.getInitialMessage();
     await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
   } catch (e) {
-    debugPrint('Messaging init error: $e');
+    if (kDebugMode) {
+      debugPrint('Messaging init error: $e');
+    }
   }
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

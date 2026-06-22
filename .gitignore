@@ -33,6 +33,12 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+ios/build/
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+**/DerivedData/
 android/app/.cxx
 
 # Symbolication related
