@@ -8,13 +8,13 @@ workflows:
       xcode: latest
       cocoapods: default
       groups:
-        - app-store-connect          # ← your existing group with API key
+        - app-store-connect
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: zerinexpress.com     # ← changed
+        bundle_identifier: zerinexpress.com
       vars:
         BUNDLE_ID: "zerinexpress.com"
-        APPLE_TEAM_ID: "7WSYLQ8Y87"             # ← changed
+        APPLE_TEAM_ID: "7WSYLQ8Y87"
     triggering:
       events:
         - push
